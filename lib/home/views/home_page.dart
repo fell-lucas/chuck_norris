@@ -2,6 +2,7 @@ import 'package:chuck_norris/home/bloc/bloc.dart';
 import 'package:chuck_norris/home/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -25,10 +26,13 @@ class HomePage extends StatelessWidget {
                 if (state is JokeLoadSuccessful) {
                   return Text(
                     state.joke.description,
-                    textAlign: TextAlign.justify,
+                    textAlign: TextAlign.center,
+                    style: TextStyle(fontSize: 18.0),
                   );
                 } else if (state is JokeLoadInProgress) {
-                  return const CircularProgressIndicator();
+                  return const SpinKitSpinningLines(
+                    color: Colors.red,
+                  );
                 } else if (state is JokeError) {
                   return Text(
                     state.error,
@@ -38,29 +42,23 @@ class HomePage extends StatelessWidget {
                     ),
                   );
                 } else {
-                  return const Text('Press the F#@% Button to see a joke');
+                  return const Text('Press the F#@% Button to get a joke');
                 }
               },
             ),
             BlocBuilder<CategoryBloc, CategoryState>(
               builder: (context, state) {
-                if (state is CategoryUpdated) {
-                  return ElevatedButton(
-                    onPressed: () {
+                return FuckingButton(
+                  onPress: () {
+                    if (state is CategoryUpdated) {
                       jokeBloc.add(
                         FetchJokeByCategory(category: state.category),
                       );
-                    },
-                    child: const Text('F#@% Button'),
-                  );
-                } else {
-                  return ElevatedButton(
-                    onPressed: () {
+                    } else {
                       jokeBloc.add(FetchJoke());
-                    },
-                    child: const Text('F#@% Button'),
-                  );
-                }
+                    }
+                  },
+                );
               },
             ),
             Column(
