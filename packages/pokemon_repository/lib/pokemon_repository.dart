@@ -1,5 +1,5 @@
 library pokemon_repository;
 
-// export 'src/joke_repository.dart';
+export 'src/pokemon_repository.dart';
 export 'src/api/models/models.dart';
-// export 'src/api/api.dart';
+export 'src/api/api.dart';
