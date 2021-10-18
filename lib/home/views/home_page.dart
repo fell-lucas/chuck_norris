@@ -1,4 +1,5 @@
 import 'package:chuck_norris/home/bloc/bloc.dart';
+import 'package:chuck_norris/home/bloc/pokemon/pokemon_bloc.dart';
 import 'package:chuck_norris/home/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -10,6 +11,7 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     JokeBloc jokeBloc = BlocProvider.of<JokeBloc>(context);
+    PokemonBloc pokeBloc = BlocProvider.of<PokemonBloc>(context);
 
     return Scaffold(
       appBar: AppBar(
@@ -17,17 +19,47 @@ class HomePage extends StatelessWidget {
       ),
       body: Container(
         alignment: Alignment.center,
-        padding: const EdgeInsets.all(20.0),
+        padding: const EdgeInsets.all(10.0),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
+            BlocBuilder<PokemonBloc, PokemonState>(
+              builder: (context, state) {
+                if (state is PokemonLoadSuccessful) {
+                  return Column(
+                    children: [
+                      Text('${state.poke.name.toTitleCase()} Norris'),
+                      Image.network(
+                        state.poke.sprites['other']['official-artwork']
+                            ['front_default'],
+                        width: 200,
+                        fit: BoxFit.contain,
+                      ),
+                    ],
+                  );
+                } else if (state is PokemonLoadInProgress) {
+                  return const SpinKitSpinningLines(
+                    color: Colors.yellow,
+                  );
+                } else if (state is PokemonError) {
+                  return Text(
+                    state.error,
+                    style: const TextStyle(
+                      color: Colors.red,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  );
+                } else {
+                  return const SizedBox.shrink();
+                }
+              },
+            ),
             BlocBuilder<JokeBloc, JokeState>(
               builder: (context, state) {
                 if (state is JokeLoadSuccessful) {
                   return Text(
                     state.joke.description,
                     textAlign: TextAlign.center,
-                    style: TextStyle(fontSize: 18.0),
                   );
                 } else if (state is JokeLoadInProgress) {
                   return const SpinKitSpinningLines(
@@ -50,6 +82,7 @@ class HomePage extends StatelessWidget {
               builder: (context, state) {
                 return FuckingButton(
                   onPress: () {
+                    pokeBloc.add(FetchSprite());
                     if (state is CategoryUpdated) {
                       jokeBloc.add(
                         FetchJokeByCategory(category: state.category),
@@ -61,10 +94,21 @@ class HomePage extends StatelessWidget {
                 );
               },
             ),
-            Column(
-              children: const [
-                Text('Choose a category'),
-                CategoryDropdown(),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                Column(
+                  children: const [
+                    Text('Joke category'),
+                    CategoryDropdown(),
+                  ],
+                ),
+                Column(
+                  children: const [
+                    Text('Pokémon color'),
+                    CategoryDropdown(),
+                  ],
+                ),
               ],
             ),
           ],
@@ -72,4 +116,14 @@ class HomePage extends StatelessWidget {
       ),
     );
   }
+}
+
+extension StringCasingExtension on String {
+  String toCapitalized() =>
+      this.length > 0 ? '${this[0].toUpperCase()}${this.substring(1)}' : '';
+  String toTitleCase() => this
+      .replaceAll(RegExp(' +'), ' ')
+      .split(" ")
+      .map((str) => str.toCapitalized())
+      .join(" ");
 }
