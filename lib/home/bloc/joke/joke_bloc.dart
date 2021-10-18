@@ -21,7 +21,7 @@ class JokeBloc extends Bloc<JokeEvent, JokeState> {
       if (event is FetchJoke) {
         try {
           yield JokeLoadInProgress();
-          var joke = await jokeRepository.fetchJoke();
+          Joke joke = await jokeRepository.fetchJoke(category: event.category);
           yield JokeLoadSuccessful(joke: joke);
         } catch (_) {
           yield JokeError(error: 'Algo deu errado. Tente novamente.');

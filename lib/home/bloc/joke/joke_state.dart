@@ -26,6 +26,7 @@ class JokeLoadSuccessful extends JokeState {
 
 class JokeError extends JokeState {
   final String error;
+
   JokeError({
     required this.error,
   });
