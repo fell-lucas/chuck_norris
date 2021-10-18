@@ -3,6 +3,7 @@ import 'package:joke_repository/src/api/models/models.dart';
 
 abstract class JokeRepository {
   Future<Joke> fetchJoke();
+  Future<Joke> fetchJokeByCategory({required String category});
 }
 
 class Repository extends JokeRepository {
@@ -15,5 +16,10 @@ class Repository extends JokeRepository {
   @override
   Future<Joke> fetchJoke() {
     return jokeApi.fetchJoke();
+  }
+
+  @override
+  Future<Joke> fetchJokeByCategory({required String category}) {
+    return jokeApi.fetchJoke(category: category);
   }
 }

@@ -4,9 +4,14 @@ part of 'joke_bloc.dart';
 abstract class JokeEvent extends Equatable {}
 
 class FetchJoke extends JokeEvent {
+  @override
+  List<Object?> get props => [];
+}
+
+class FetchJokeByCategory extends JokeEvent {
   final String category;
-  FetchJoke({
-    this.category = '',
+  FetchJokeByCategory({
+    required this.category,
   });
 
   @override

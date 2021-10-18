@@ -37,7 +37,7 @@ class MyApp extends StatelessWidget {
             create: (context) => CategoryBloc(),
           ),
         ],
-        child: HomePage(),
+        child: const HomePage(),
       ),
     );
   }

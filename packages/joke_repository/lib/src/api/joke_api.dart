@@ -10,8 +10,10 @@ class JokeApi {
 
   JokeApi({http.Client? client}) : _client = client ?? http.Client();
 
-  Future<Joke> fetchJoke() async {
-    final result = await _client.get(Uri.parse(kApiUrl));
+  Future<Joke> fetchJoke({String? category}) async {
+    final result = await _client.get(
+      Uri.parse(category != null ? '$kApiUrl?category=$category' : kApiUrl),
+    );
 
     if (result.statusCode != 200) {
       throw result.statusCode;

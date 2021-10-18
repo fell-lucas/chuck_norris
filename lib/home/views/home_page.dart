@@ -48,7 +48,7 @@ class HomePage extends StatelessWidget {
                   return ElevatedButton(
                     onPressed: () {
                       jokeBloc.add(
-                        FetchJoke(category: state.category),
+                        FetchJokeByCategory(category: state.category),
                       );
                     },
                     child: const Text('F#@% Button'),
