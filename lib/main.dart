@@ -1,4 +1,4 @@
-import 'package:chuck_norris/home/bloc/joke_bloc.dart';
+import 'package:chuck_norris/home/bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:joke_repository/joke_repository.dart';
@@ -6,6 +6,7 @@ import 'package:joke_repository/joke_repository.dart';
 import 'package:chuck_norris/home/home.dart';
 
 void main() {
+  // TODO: REFACTOR MAIN VARIABLES
   final JokeApi jokeApi = JokeApi();
   final JokeRepository jokeRepository = Repository(jokeApi: jokeApi);
   runApp(MyApp(
@@ -27,8 +28,15 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: BlocProvider<JokeBloc>(
-        create: (context) => JokeBloc(jokeRepository: jokeRepository),
+      home: MultiBlocProvider(
+        providers: [
+          BlocProvider<JokeBloc>(
+            create: (context) => JokeBloc(jokeRepository: jokeRepository),
+          ),
+          BlocProvider(
+            create: (context) => CategoryBloc(),
+          ),
+        ],
         child: HomePage(),
       ),
     );

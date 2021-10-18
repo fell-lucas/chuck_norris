@@ -1,5 +1,5 @@
-import 'package:chuck_norris/home/bloc/joke_bloc.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:chuck_norris/home/bloc/bloc.dart';
+import 'package:chuck_norris/home/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -16,7 +16,7 @@ class HomePage extends StatelessWidget {
       ),
       body: Container(
         alignment: Alignment.center,
-        padding: EdgeInsets.all(20.0),
+        padding: const EdgeInsets.all(20.0),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
@@ -42,11 +42,32 @@ class HomePage extends StatelessWidget {
                 }
               },
             ),
-            ElevatedButton(
-              onPressed: () {
-                jokeBloc.add(FetchJoke());
+            BlocBuilder<CategoryBloc, CategoryState>(
+              builder: (context, state) {
+                if (state is CategoryUpdated) {
+                  return ElevatedButton(
+                    onPressed: () {
+                      jokeBloc.add(
+                        FetchJoke(category: state.category),
+                      );
+                    },
+                    child: const Text('F#@% Button'),
+                  );
+                } else {
+                  return ElevatedButton(
+                    onPressed: () {
+                      jokeBloc.add(FetchJoke());
+                    },
+                    child: const Text('F#@% Button'),
+                  );
+                }
               },
-              child: const Text('F#@% Button'),
+            ),
+            Column(
+              children: const [
+                Text('Choose a category'),
+                CategoryDropdown(),
+              ],
             ),
           ],
         ),
