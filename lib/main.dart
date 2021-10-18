@@ -1,25 +1,24 @@
 import 'package:chuck_norris/home/bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get_it/get_it.dart';
 import 'package:joke_repository/joke_repository.dart';
 
 import 'package:chuck_norris/home/home.dart';
 
+GetIt getIt = GetIt.instance;
+
 void main() {
-  // TODO: REFACTOR MAIN VARIABLES
-  final JokeApi jokeApi = JokeApi();
-  final JokeRepository jokeRepository = Repository(jokeApi: jokeApi);
-  runApp(MyApp(
-    jokeRepository: jokeRepository,
-  ));
+  getIt.registerSingleton<JokeApi>(JokeApi());
+  getIt.registerSingleton<JokeRepository>(
+    Repository(jokeApi: getIt<JokeApi>()),
+  );
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  final JokeRepository jokeRepository;
-
   const MyApp({
     Key? key,
-    required this.jokeRepository,
   }) : super(key: key);
 
   @override
@@ -31,7 +30,9 @@ class MyApp extends StatelessWidget {
       home: MultiBlocProvider(
         providers: [
           BlocProvider<JokeBloc>(
-            create: (context) => JokeBloc(jokeRepository: jokeRepository),
+            create: (context) => JokeBloc(
+              jokeRepository: getIt<JokeRepository>(),
+            ),
           ),
           BlocProvider(
             create: (context) => CategoryBloc(),
