@@ -16,30 +16,38 @@ class HomePage extends StatelessWidget {
       ),
       body: Container(
         alignment: Alignment.center,
+        padding: EdgeInsets.all(20.0),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
-            const Text('Press the F#@% button to see the word'),
+            BlocBuilder<JokeBloc, JokeState>(
+              builder: (context, state) {
+                if (state is JokeLoadSuccessful) {
+                  return Text(
+                    state.joke.description,
+                    textAlign: TextAlign.justify,
+                  );
+                } else if (state is JokeLoadInProgress) {
+                  return const CircularProgressIndicator();
+                } else if (state is JokeError) {
+                  return Text(
+                    state.error,
+                    style: const TextStyle(
+                      color: Colors.red,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  );
+                } else {
+                  return const Text('Press the F#@% Button to see a joke');
+                }
+              },
+            ),
             ElevatedButton(
               onPressed: () {
                 jokeBloc.add(FetchJoke());
               },
-              child: const Text('Generate'),
+              child: const Text('F#@% Button'),
             ),
-            BlocBuilder<JokeBloc, JokeState>(
-              builder: (context, state) {
-                if (state is JokeLoadSuccessful) {
-                  // TODO: REFACTOR VALUE PROPERTY
-                  return Text(state.joke.value);
-                } else if (state is JokeLoadInProgress) {
-                  return Container(
-                    child: CircularProgressIndicator(),
-                  );
-                } else {
-                  return Text('');
-                }
-              },
-            )
           ],
         ),
       ),

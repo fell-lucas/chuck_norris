@@ -8,10 +8,10 @@ part of 'joke.dart';
 
 Joke _$JokeFromJson(Map<String, dynamic> json) => Joke(
       id: json['id'] as String,
-      value: json['value'] as String,
+      description: json['value'] as String,
     );
 
 Map<String, dynamic> _$JokeToJson(Joke instance) => <String, dynamic>{
       'id': instance.id,
-      'value': instance.value,
+      'value': instance.description,
     };

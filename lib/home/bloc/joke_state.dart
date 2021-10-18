@@ -24,4 +24,12 @@ class JokeLoadSuccessful extends JokeState {
   List<Object?> get props => [joke];
 }
 
-// TODO: ERROR STATE
+class JokeError extends JokeState {
+  final String error;
+  JokeError({
+    required this.error,
+  });
+
+  @override
+  List<Object?> get props => [error];
+}
