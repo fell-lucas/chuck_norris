@@ -47,8 +47,15 @@ class _FuckingButtonState extends State<FuckingButton>
   }
 
   @override
+  void dispose() {
+    controller.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return ElevatedButton(
+      key: const Key('fucking_button'),
       style: ElevatedButton.styleFrom(
         padding: const EdgeInsets.all(0.0),
         shape: RoundedRectangleBorder(
@@ -61,7 +68,8 @@ class _FuckingButtonState extends State<FuckingButton>
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10.0),
           gradient: LinearGradient(
-              colors: [colorAnimationRed.value, colorAnimationAmber.value]),
+            colors: [colorAnimationRed.value, colorAnimationAmber.value],
+          ),
         ),
         child: Container(
             padding: const EdgeInsets.all(12.0),

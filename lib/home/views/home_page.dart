@@ -28,10 +28,14 @@ class HomePage extends StatelessWidget {
                 if (state is PokemonLoadSuccessful) {
                   return Column(
                     children: [
-                      Text('${state.poke.name.toTitleCase()} Norris'),
+                      Text(
+                        '${state.poke.name.toTitleCase()} Norris',
+                        key: const Key('pokemon_name'),
+                      ),
                       Image.network(
                         state.poke.sprites['other']['official-artwork']
                             ['front_default'],
+                        key: const Key('pokemon_image'),
                         width: 200,
                         fit: BoxFit.contain,
                       ),
@@ -59,6 +63,7 @@ class HomePage extends StatelessWidget {
                 if (state is JokeLoadSuccessful) {
                   return Text(
                     state.joke.description,
+                    key: const Key('chuck_norris_joke'),
                     textAlign: TextAlign.center,
                   );
                 } else if (state is JokeLoadInProgress) {
@@ -100,12 +105,6 @@ class HomePage extends StatelessWidget {
                 Column(
                   children: const [
                     Text('Joke category'),
-                    CategoryDropdown(),
-                  ],
-                ),
-                Column(
-                  children: const [
-                    Text('Pokémon color'),
                     CategoryDropdown(),
                   ],
                 ),
