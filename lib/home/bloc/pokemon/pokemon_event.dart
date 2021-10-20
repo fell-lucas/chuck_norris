@@ -6,3 +6,8 @@ class FetchSprite extends PokemonEvent {
   @override
   List<Object?> get props => [];
 }
+
+class FetchColors extends PokemonEvent {
+  @override
+  List<Object?> get props => [];
+}
