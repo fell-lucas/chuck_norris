@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:http/http.dart' as http;
 import 'package:pokemon_repository/src/api/models/models.dart';
@@ -28,7 +29,7 @@ class PokemonApi {
     final result = await _client.get(Uri.parse(kApiColorUrl));
 
     if (result.statusCode != 200) {
-      throw result.statusCode;
+      throw const HttpException('Erro ao conectar com a API.');
     }
 
     return PokemonColors.fromJson(jsonDecode(result.body));

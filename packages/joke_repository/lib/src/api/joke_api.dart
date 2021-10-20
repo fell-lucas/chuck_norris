@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:http/http.dart' as http;
 import 'package:joke_repository/src/api/models/models.dart';
@@ -16,7 +17,7 @@ class JokeApi {
     );
 
     if (result.statusCode != 200) {
-      throw result.statusCode;
+      throw const HttpException('Erro ao conectar com a API.');
     }
 
     return Joke.fromJson(jsonDecode(result.body));
