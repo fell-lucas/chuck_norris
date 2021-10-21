@@ -28,6 +28,12 @@ main() {
       expect(jokeBloc.state, JokeInitial());
     });
     group('FetchJoke', () {
+      test('check for event equality', () {
+        var first = FetchJoke();
+        var second = FetchJoke();
+
+        expect(first == second, isTrue);
+      });
       blocTest<JokeBloc, JokeState>(
         'emits [JokeLoadInProgress, JokeLoadSuccessful] when FetchJoke is added.',
         build: () {
@@ -56,6 +62,13 @@ main() {
     });
     group('FetchJokeByCategory', () {
       String category = 'dev';
+
+      test('check for event equality', () {
+        var first = FetchJokeByCategory(category: category);
+        var second = FetchJokeByCategory(category: category);
+
+        expect(first == second, isTrue);
+      });
       blocTest<JokeBloc, JokeState>(
         'emits [JokeLoadInProgress, JokeLoadSuccessful] when FetchJokeByCategory is added.',
         build: () {
