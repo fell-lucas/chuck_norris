@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:chuck_norris/home/bloc/bloc.dart';
 import 'package:chuck_norris/home/bloc/pokemon/pokemon_bloc.dart';
 import 'package:chuck_norris/home/widgets/widgets.dart';
@@ -87,7 +89,9 @@ class HomePage extends StatelessWidget {
               builder: (context, state) {
                 return FuckingButton(
                   onPress: () {
-                    pokeBloc.add(FetchSprite());
+                    pokeBloc.add(FetchSprite(
+                      pokeNumber: Random().nextInt(620) + 1,
+                    ));
                     if (state is CategoryUpdated) {
                       jokeBloc.add(
                         FetchJokeByCategory(category: state.category),
