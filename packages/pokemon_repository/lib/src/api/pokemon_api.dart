@@ -19,7 +19,7 @@ class PokemonApi {
     );
 
     if (result.statusCode != 200) {
-      throw result.statusCode;
+      throw const HttpException('Erro ao conectar com a API.');
     }
 
     return Pokemon.fromJson(jsonDecode(result.body));

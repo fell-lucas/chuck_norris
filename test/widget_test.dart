@@ -18,7 +18,7 @@ void main() {
     Repository(jokeApi: getIt<JokeApi>()),
   );
   getIt.registerSingleton<PokemonApi>(PokemonApi());
-  getIt.registerSingleton<IPokemonRepository>(
+  getIt.registerSingleton<PokemonRepository>(
     PokemonRepository(pokeApi: getIt<PokemonApi>()),
   );
   group('pokemon', () {

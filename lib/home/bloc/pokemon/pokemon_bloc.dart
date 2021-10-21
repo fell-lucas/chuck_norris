@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:pokemon_repository/pokemon_repository.dart';
@@ -18,8 +20,8 @@ class PokemonBloc extends Bloc<PokemonEvent, PokemonState> {
       Pokemon poke =
           await pokemonRepository.fetchPokemon(pokeNumber: event.pokeNumber);
       yield PokemonLoadSuccessful(poke: poke);
-    } catch (e) {
-      yield PokemonError(error: 'Algo deu errado. Tente novamente.');
+    } on HttpException catch (e) {
+      yield PokemonError(error: e.message);
     }
   }
 
@@ -29,6 +31,7 @@ class PokemonBloc extends Bloc<PokemonEvent, PokemonState> {
   ) async* {
     if (event is FetchSprite) {
       yield* _mapFetchSpriteToState(event);
-    } else if (event is FetchColors) {}
+    }
+    // else if (event is FetchColors) {}
   }
 }
