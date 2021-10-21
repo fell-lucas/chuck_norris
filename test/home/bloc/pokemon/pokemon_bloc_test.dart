@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:bloc_test/bloc_test.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:http/http.dart' as http;
@@ -29,8 +31,18 @@ main() {
     pokemonBloc = PokemonBloc(pokemonRepository: pokemonRepository);
   });
   group('PokemonBloc', () {
+    test('verify PokemonInitial is initial state', () {
+      expect(pokemonBloc.state, PokemonInitial());
+    });
     group('FetchSprite', () {
       Pokemon poke = Pokemon(id: 1, name: 'abc', sprites: 'sprites');
+      String error = 'error';
+
+      test('verify event equality', () {
+        var first = FetchSprite(pokeNumber: pokeNumber);
+        var second = FetchSprite(pokeNumber: pokeNumber);
+        expect(first == second, isTrue);
+      });
       blocTest<PokemonBloc, PokemonState>(
         'emits [PokemonLoadInProgress, PokemonLoadSuccessful] when FetchSprite is added.',
         build: () {
@@ -42,6 +54,19 @@ main() {
         expect: () => <PokemonState>[
           PokemonLoadInProgress(),
           PokemonLoadSuccessful(poke: poke)
+        ],
+      );
+      blocTest<PokemonBloc, PokemonState>(
+        'emits [PokemonLoadInProgress, PokemonError] when FetchSprite is added.',
+        build: () {
+          when(() => pokemonRepository.fetchPokemon(pokeNumber: pokeNumber))
+              .thenThrow(HttpException(error));
+          return pokemonBloc;
+        },
+        act: (bloc) => bloc.add(FetchSprite(pokeNumber: pokeNumber)),
+        expect: () => <PokemonState>[
+          PokemonLoadInProgress(),
+          PokemonError(error: error),
         ],
       );
     });
