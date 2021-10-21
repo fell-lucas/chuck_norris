@@ -5,7 +5,6 @@
 // gestures. You can also use WidgetTester to find child widgets in the widget
 // tree, read text, and verify that the values of widget properties are correct.
 
-import 'package:chuck_norris/home/home.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -19,8 +18,8 @@ void main() {
     Repository(jokeApi: getIt<JokeApi>()),
   );
   getIt.registerSingleton<PokemonApi>(PokemonApi());
-  getIt.registerSingleton<PokemonRepository>(
-    PokeRepository(pokeApi: getIt<PokemonApi>()),
+  getIt.registerSingleton<IPokemonRepository>(
+    PokemonRepository(pokeApi: getIt<PokemonApi>()),
   );
   group('pokemon', () {
     testWidgets('find fckn button', (tester) async {

@@ -17,7 +17,7 @@ void main() {
   );
   getIt.registerSingleton<PokemonApi>(PokemonApi());
   getIt.registerSingleton<PokemonRepository>(
-    PokeRepository(pokeApi: getIt<PokemonApi>()),
+    PokemonRepository(pokeApi: getIt<PokemonApi>()),
   );
   runApp(const MyApp());
 }
