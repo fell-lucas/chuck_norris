@@ -4,9 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 class PokemonColumn extends StatelessWidget {
-  const PokemonColumn({
-    Key? key,
-  }) : super(key: key);
+  const PokemonColumn({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
