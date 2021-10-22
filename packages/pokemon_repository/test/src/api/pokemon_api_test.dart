@@ -1,36 +1,61 @@
-import 'package:http/http.dart' as http;
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
+import 'package:http/http.dart' as http;
 import 'package:pokemon_repository/pokemon_repository.dart';
-import 'package:pokemon_repository/src/api/api.dart';
 
 class MockHttpClient extends Mock implements http.Client {}
 
-class MockHttpResponse extends Mock implements http.Response {}
-
-const kApiUrl = 'https://pokeapi.co/api/v2/pokemon/';
-
 main() {
-  late PokemonApi pokeApi;
-  late http.Client mockHttp;
-  late int pokeNumber;
-  late http.Response response;
+  late http.Client mockedClient;
+  late Map<String, http.Response> mockedResponses;
+  late PokemonApi api;
 
   setUp(() {
-    mockHttp = MockHttpClient();
-    pokeApi = PokemonApi(client: mockHttp);
-    pokeNumber = 1;
-    response = MockHttpResponse();
+    mockedClient = MockHttpClient();
+    mockedResponses = {
+      'success': http.Response(
+        '{"id": 1, "name": "abc", "sprites": "abc"}',
+        200,
+      ),
+      'error': http.Response(
+        '{"id": 1, "name": "abc", "sprites": "abc"}',
+        404,
+      )
+    };
+    api = PokemonApi(client: mockedClient);
+    registerFallbackValue(Uri.parse(''));
   });
+  group('FetchSprite', () {
+    int pokeNumber = 1;
+    test('Success', () async {
+      when(
+        () => mockedClient.get(any()),
+      ).thenAnswer((_) async => mockedResponses['success']!);
+      Pokemon pokemon = await api.fetchPokemon(pokeNumber: 1);
+      expect(
+        pokemon,
+        Pokemon.fromJson(jsonDecode(mockedResponses['success']!.body)),
+      );
+    });
+    test('Error', () async {
+      when(
+        () => mockedClient.get(any()),
+      ).thenAnswer((_) async => mockedResponses['error']!);
+      expect(
+        () async => await api.fetchPokemon(pokeNumber: pokeNumber),
+        throwsA(isA<HttpException>()),
+      );
+    });
 
-  group('fetchPokemon', () {
     test('should make api call', () async {
-      when(() => mockHttp.get(Uri.parse('$kApiUrl/$pokeNumber')))
-          .thenAnswer((_) async => response);
-      try {
-        await pokeApi.fetchPokemon(pokeNumber: pokeNumber);
-      } catch (_) {}
-      verify(() => mockHttp.get(Uri.parse('$kApiUrl/$pokeNumber'))).called(1);
+      when(() => mockedClient.get(Uri.parse('$kApiUrl/$pokeNumber')))
+          .thenAnswer((_) async => mockedResponses['success']!);
+      await api.fetchPokemon(pokeNumber: pokeNumber);
+      verify(() => mockedClient.get(Uri.parse('$kApiUrl/$pokeNumber')))
+          .called(1);
     });
   });
 }
