@@ -19,6 +19,8 @@ class MockPokemonRepository extends Mock implements PokemonRepository {
   });
 }
 
+class MockSprites extends Mock implements Sprites {}
+
 main() {
   int pokeNumber = 1;
   late PokemonApi pokemonApi;
@@ -35,7 +37,7 @@ main() {
       expect(pokemonBloc.state, PokemonInitial());
     });
     group('FetchSprite', () {
-      Pokemon poke = Pokemon(id: 1, name: 'abc', sprites: 'sprites');
+      Pokemon poke = Pokemon(id: 1, name: 'abc', sprites: MockSprites());
       String error = 'error';
 
       test('verify event equality', () {
