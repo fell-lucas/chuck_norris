@@ -22,14 +22,6 @@ void main() {
     PokemonRepository(pokeApi: getIt<PokemonApi>()),
   );
   group('pokemon', () {
-    testWidgets('find fckn button', (tester) async {
-      try {
-        await tester.pumpWidget(const MyApp());
-        await tester.pumpAndSettle();
-        final btn = find.byKey(const Key('fucking_button'));
-        expect(btn, findsOneWidget);
-      } catch (_) {}
-    });
     testWidgets('find chuck norris joke text', (tester) async {
       try {
         await tester.pumpWidget(const MyApp());
