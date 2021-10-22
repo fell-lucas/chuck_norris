@@ -30,18 +30,23 @@ class PokemonColumn extends StatelessWidget {
           );
         } else if (state is PokemonLoadInProgress) {
           return const SpinKitSpinningLines(
+            key: Key('loadInProgress_pokemon_indicator'),
             color: Colors.yellow,
           );
         } else if (state is PokemonError) {
           return Text(
             state.error,
+            key: const Key('error_pokemon_text'),
             style: const TextStyle(
               color: Colors.red,
               fontWeight: FontWeight.w500,
             ),
           );
         } else {
-          return const SizedBox.shrink();
+          return const Text(
+            'Press the shiny button for a pokémon!',
+            key: Key('initial_pokemon_text'),
+          );
         }
       },
     );

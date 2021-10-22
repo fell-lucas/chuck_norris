@@ -34,7 +34,7 @@ class JokeText extends StatelessWidget {
           );
         } else {
           return const Text(
-            'Press the F#@% Button to get a joke',
+            'And a Chuck Norris joke!',
             key: Key('initial_joke_text'),
           );
         }
