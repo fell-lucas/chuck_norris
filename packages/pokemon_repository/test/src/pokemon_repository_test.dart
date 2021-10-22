@@ -5,10 +5,12 @@ import 'package:pokemon_repository/pokemon_repository.dart';
 
 class MockPokemonApi extends Mock implements PokemonApi {}
 
+class MockSprites extends Mock implements Sprites {}
+
 void main() {
   late PokemonApi api;
   late PokemonRepository repository;
-  Pokemon pokemon = Pokemon(id: 1, name: 'abc', sprites: 'abc');
+  Pokemon pokemon = Pokemon(id: 1, name: 'abc', sprites: MockSprites());
 
   setUp(() {
     api = MockPokemonApi();

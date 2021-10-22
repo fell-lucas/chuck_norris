@@ -1,13 +1,15 @@
 import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
 
+import 'models.dart';
+
 part 'pokemon.g.dart';
 
 @JsonSerializable()
 class Pokemon extends Equatable {
   final int id;
   final String name;
-  final dynamic sprites;
+  final Sprites sprites;
   const Pokemon({
     required this.id,
     required this.name,

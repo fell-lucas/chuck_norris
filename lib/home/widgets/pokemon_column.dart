@@ -20,8 +20,7 @@ class PokemonColumn extends StatelessWidget {
                 key: const Key('pokemon_name'),
               ),
               Image.network(
-                state.poke.sprites['other']['official-artwork']
-                    ['front_default'],
+                state.poke.sprites.other.officialArtwork.url,
                 key: const Key('pokemon_image'),
                 width: 200,
                 fit: BoxFit.contain,
