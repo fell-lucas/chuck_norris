@@ -70,5 +70,13 @@ main() {
         ],
       );
     });
+
+    group('FetchColors', () {
+      test('verify event equality', () {
+        var first = FetchColors();
+        var second = FetchColors();
+        expect(first == second, isTrue);
+      });
+    });
   });
 }
