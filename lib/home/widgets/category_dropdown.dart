@@ -10,6 +10,7 @@ class CategoryDropdown extends StatelessWidget {
     return BlocBuilder<CategoryBloc, CategoryState>(
       builder: (context, state) {
         return DropdownButton<String>(
+          key: const Key('joke_category_dropdown'),
           value: (state is CategoryUpdated) ? state.category : 'random',
           items: const [
             "animal",
