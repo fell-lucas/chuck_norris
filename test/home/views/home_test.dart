@@ -1,30 +1,13 @@
-// This is a basic Flutter widget test.
-//
-// To perform an interaction with a widget in your test, use the WidgetTester
-// utility that Flutter provides. For example, you can send tap and scroll
-// gestures. You can also use WidgetTester to find child widgets in the widget
-// tree, read text, and verify that the values of widget properties are correct.
-
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-import 'package:chuck_norris/main.dart';
-import 'package:joke_repository/joke_repository.dart';
-import 'package:pokemon_repository/pokemon_repository.dart';
+import 'package:chuck_norris/main.dart' as app;
 
-void main() {
-  getIt.registerSingleton<JokeApi>(JokeApi());
-  getIt.registerSingleton<JokeRepository>(
-    Repository(jokeApi: getIt<JokeApi>()),
-  );
-  getIt.registerSingleton<PokemonApi>(PokemonApi());
-  getIt.registerSingleton<PokemonRepository>(
-    PokemonRepository(pokeApi: getIt<PokemonApi>()),
-  );
-  group('pokemon', () {
+main() {
+  group('Joke', () {
     testWidgets('find chuck norris joke text', (tester) async {
       try {
-        await tester.pumpWidget(const MyApp());
+        app.main();
         await tester.pumpAndSettle();
         final btn = find.byKey(const Key('fucking_button'));
         tester.tap(btn);
@@ -33,10 +16,12 @@ void main() {
         expect(chuckJoke, findsOneWidget);
       } catch (_) {}
     });
+  });
 
+  group('Pokemon', () {
     testWidgets('find pokemon image and name', (tester) async {
       try {
-        await tester.pumpWidget(const MyApp());
+        app.main();
         await tester.pumpAndSettle();
         final btn = find.byKey(const Key('fucking_button'));
         tester.tap(btn);
