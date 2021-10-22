@@ -24,14 +24,4 @@ class PokemonApi {
 
     return Pokemon.fromJson(jsonDecode(result.body));
   }
-
-  Future<PokemonColors> fetchColors() async {
-    final result = await _client.get(Uri.parse(kApiColorUrl));
-
-    if (result.statusCode != 200) {
-      throw const HttpException('Erro ao conectar com a API.');
-    }
-
-    return PokemonColors.fromJson(jsonDecode(result.body));
-  }
 }
