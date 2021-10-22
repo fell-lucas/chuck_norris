@@ -68,4 +68,13 @@ main() {
       });
     });
   });
+
+  test('ToJson', () async {
+    when(
+      () => mockedClient.get(any()),
+    ).thenAnswer((_) async => mockedResponses['success']!);
+    Joke joke = await api.fetchJoke();
+    Map<String, dynamic> json = joke.toJson();
+    expect(joke == Joke.fromJson(json), isTrue);
+  });
 }
