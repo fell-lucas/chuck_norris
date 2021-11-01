@@ -12,16 +12,18 @@ main() {
   late http.Client mockedClient;
   late Map<String, http.Response> mockedResponses;
   late PokemonApi api;
+  late int pokeNumber;
 
   setUp(() {
+    pokeNumber = 1;
     mockedClient = MockHttpClient();
     mockedResponses = {
       'success': http.Response(
-        '{"id": 1, "name": "abc", "sprites": "abc"}',
+        '{"id": 1, "name": "abc", "sprites": {"other": {"official-artwork": {"front_default": "http://hi.com",}}}}',
         200,
       ),
       'error': http.Response(
-        '{"id": 1, "name": "abc", "sprites": "abc"}',
+        '{"id": 1, "name": "abc", "sprites": {"other": {"official-artwork": {"front_default": "http://hi.com"}}}}',
         404,
       )
     };
@@ -29,7 +31,6 @@ main() {
     registerFallbackValue(Uri.parse(''));
   });
   group('FetchSprite', () {
-    int pokeNumber = 1;
     test('Success', () async {
       when(
         () => mockedClient.get(any()),
@@ -57,5 +58,14 @@ main() {
       verify(() => mockedClient.get(Uri.parse('$kApiUrl/$pokeNumber')))
           .called(1);
     });
+  });
+
+  test('ToJson', () async {
+    when(
+      () => mockedClient.get(any()),
+    ).thenAnswer((_) async => mockedResponses['success']!);
+    Pokemon pokemon = await api.fetchPokemon(pokeNumber: pokeNumber);
+    Map<String, dynamic> json = pokemon.toJson();
+    expect(pokemon == Pokemon.fromJson(json), isTrue);
   });
 }

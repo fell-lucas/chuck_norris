@@ -13,7 +13,7 @@ class Other extends Equatable {
   });
 
   @override
-  List<Object?> get props => throw [officialArtwork];
+  List<Object?> get props => [officialArtwork];
 
   factory Other.fromJson(Map<String, dynamic> json) => _$OtherFromJson(json);
   Map<String, dynamic> toJson() => _$OtherToJson(this);
