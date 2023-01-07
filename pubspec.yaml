@@ -18,7 +18,7 @@ dependencies:
   pokemon_repository:
     path: "packages/pokemon_repository"
   flutter:
-    sdk: flutter
+    sdk: flutter # Version 3.0.5
 
   cupertino_icons: ^1.0.2
 
